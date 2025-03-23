@@ -212,6 +212,14 @@
   (org-fontify-whole-heading-line t)
   (org-fontify-quote-and-verse-blocks t))
 
+(use-package company
+  :ensure t)
+
+(use-package company-c-headers
+  :ensure t)
+
+(add-hook 'after-init-hook 'global-company-mode)
+
 (use-package lsp-mode
   :ensure t
   :init
@@ -236,11 +244,16 @@
   :commands lsp)
 
 ;; optionally
-(use-package lsp-ui 
+(use-package lsp-ui
   :ensure t
+  :init
+  (setq lsp-ui-sideline-show-diagnostics t)
+  (setq lsp-ui-sideline-show-hover t)
+  (setq lsp-ui-sideline-show-code-actions t)
+  (setq lsp-ui-peek-enable t)
+  (setq lsp-ui-doc-enable nil)
   :commands lsp-ui-mode)
 
-;; optionally if you want to use debugger
 (use-package dap-mode)
 
 (use-package treesit-auto
@@ -283,4 +296,9 @@
 
 (elcord-mode)
 
-
+(use-package vterm
+  :ensure t
+  :commands vterm
+  :config
+  ;; Speed up vterm
+  (setq vterm-timer-delay 0.01))
