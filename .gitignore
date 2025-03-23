@@ -1,4 +1,8 @@
-*
+*.elc
+elpa/
+eln-cache/
+custom.el
+undo-fu-session/
 !README.md
 !early-init.el
 !init.el
