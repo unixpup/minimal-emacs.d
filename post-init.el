@@ -20,6 +20,11 @@
   :config
   (load-theme 'timu-macos t))
 
+;; optional if you want which-key integration
+(use-package which-key
+    :config
+    (which-key-mode))
+
 (use-package corfu
   :ensure t
   :defer t
@@ -206,3 +211,76 @@
   (org-fontify-todo-headline t)
   (org-fontify-whole-heading-line t)
   (org-fontify-quote-and-verse-blocks t))
+
+(use-package lsp-mode
+  :ensure t
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-l")
+  (setq lsp-inlay-hint-enable t)
+  (setq lsp-warn-no-matched-clients nil)
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (python-mode . lsp)
+         (prog-mode . lsp)
+         (alive-lsp . lsp)
+         (asm-lsp . lsp)
+         (astro-ls . lsp)
+         (bash-ls . lsp)
+         (html-ls . lsp)
+         (eslint . lsp)
+         (c-mode . lsp)
+         (c++-mode . lsp)
+         (rust-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+;; optionally
+(use-package lsp-ui 
+  :ensure t
+  :commands lsp-ui-mode)
+
+;; optionally if you want to use debugger
+(use-package dap-mode)
+
+(use-package treesit-auto
+  :ensure t
+  :custom
+  (treesit-auto-install t)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
+(use-package yasnippet
+  :ensure t)
+
+(yas-global-mode 1)
+
+(add-hook 'before-save-hook (lambda () (lsp-format-buffer)))
+
+(use-package web-mode
+  :ensure t
+  :mode
+  (("\\.phtml\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.tpl\\'" . web-mode)
+   ("\\.[agj]sp\\'" . web-mode)
+   ("\\.as[cp]x\\'" . web-mode)
+   ("\\.erb\\'" . web-mode)
+   ("\\.mustache\\'" . web-mode)
+   ("\\.djhtml\\'" . web-mode))
+   ("\\.html$" . web-mode)
+  :config
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-css-colorization t)
+  (setq web-mode-enable-block-face t)
+  (setq web-mode-enable-part-face t)
+  (setq web-mode-enable-comment-interpolation t)
+  (setq web-mode-enable-heredoc-fontification t))
+
+(use-package elcord
+	:ensure t)
+
+(elcord-mode)
+
+

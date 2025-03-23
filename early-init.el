@@ -16,6 +16,8 @@
 
 ;;; Variables
 
+(setenv "LSP_USE_PLISTS" "true")
+
 (defvar minimal-emacs-ui-features '()
   "List of user interface features to disable in minimal Emacs setup.
 This variable holds a list Emacs UI features that can be enabled:
