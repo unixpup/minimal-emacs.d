@@ -329,9 +329,8 @@
 ;; when the window is narrower than `truncate-partial-width-windows' characters.
 (setq truncate-partial-width-windows nil)
 
-;; Prefer spaces over tabs. Spaces offer a more consistent default compared to
-;; 8-space tabs. This setting can be adjusted on a per-mode basis as needed.
-(setq-default indent-tabs-mode nil
+;; ALWAYS TAB OVER SPACES!
+(setq-default indent-tabs-mode t
               tab-width 4)
 
 ;; Enable indentation and completion using the TAB key
