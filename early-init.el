@@ -81,13 +81,6 @@ When enabled, this variable sets the following:
 (setq load-prefer-newer t)
 (setq debug-on-error minimal-emacs-debug)
 
-(defvar my-native-comp-reserved-cpus 0
-  "Number of CPUs to reserve and not use for `native-compile'.")
-
-(defun my-calculate-native-comp-async-jobs ()
-  "Set `native-comp-async-jobs-number' based on the available CPUs."
-  ;; The `num-processors' function is only available in Emacs >= 28.1
-  (max 1 (- (num-processors) my-native-comp-reserved-cpus)))
 
 
 (defvar minimal-emacs--success nil)
@@ -153,15 +146,26 @@ pre-early-init.el, and post-early-init.el.")
 
 ;;; Native compilation and Byte compilation
 
+
+(defvar my-native-comp-reserved-cpus 0
+  "Number of CPUs to reserve and not use for `native-compile'.")
+
+(defun my-calculate-native-comp-async-jobs ()
+  "Set `native-comp-async-jobs-number' based on the available CPUs."
+  ;; The `num-processors' function is only available in Emacs >= 28.1
+  (max 1 (- (num-processors) my-native-comp-reserved-cpus)))
+
 (if (and (featurep 'native-compile)
          (fboundp 'native-comp-available-p)
          (native-comp-available-p))
     ;; Activate `native-compile'
     (setq native-comp-deferred-compilation minimal-emacs-setup-native-compilation
+		  native-comp-async-jobs-number (my-calculate-native-comp-async-jobs)
           native-comp-jit-compilation minimal-emacs-setup-native-compilation
           package-native-compile minimal-emacs-setup-native-compilation)
   ;; Deactivate the `native-compile' feature if it is not available
   (setq features (delq 'native-compile features)))
+
 
 (setq native-comp-warning-on-missing-source minimal-emacs-debug
       native-comp-async-report-warnings-errors (or minimal-emacs-debug 'silent)
