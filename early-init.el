@@ -31,7 +31,7 @@ This variable holds a list Emacs UI features that can be enabled:
 (defvar minimal-emacs-debug (bound-and-true-p init-file-debug)
   "Non-nil to enable debug.")
 
-(defvar minimal-emacs-gc-cons-threshold (* 32 1024 1024)
+(defvar minimal-emacs-gc-cons-threshold (* 256 8192 8192)
   "Value to set `gc-cons-threshold' to after Emacs startup.
 Ignored if `minimal-emacs-optimize-startup-gc' is nil.")
 
@@ -170,7 +170,7 @@ pre-early-init.el, and post-early-init.el.")
 (setq default-input-method nil)
 
 ;; Increase how much is read from processes in a single chunk
-(setq read-process-output-max (* 2 1024 1024))  ; 1024kb
+(setq read-process-output-max (* 2 4096 4096))  ; 4096kb
 
 (setq process-adaptive-read-buffering nil)
 
@@ -399,7 +399,7 @@ this stage of initialization."
 ;;; Security
 (setq gnutls-verify-error t)  ; Prompts user if there are certificate issues
 (setq tls-checktrust t)  ; Ensure SSL/TLS connections undergo trust verification
-(setq gnutls-min-prime-bits 3072)  ; Stronger GnuTLS encryption
+(setq gnutls-min-prime-bits 4096)  ; Stronger GnuTLS encryption
 
 ;;; package.el
 (setq use-package-compute-statistics minimal-emacs-debug)
