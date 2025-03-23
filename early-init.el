@@ -81,6 +81,15 @@ When enabled, this variable sets the following:
 (setq load-prefer-newer t)
 (setq debug-on-error minimal-emacs-debug)
 
+(defvar my-native-comp-reserved-cpus 0
+  "Number of CPUs to reserve and not use for `native-compile'.")
+
+(defun my-calculate-native-comp-async-jobs ()
+  "Set `native-comp-async-jobs-number' based on the available CPUs."
+  ;; The `num-processors' function is only available in Emacs >= 28.1
+  (max 1 (- (num-processors) my-native-comp-reserved-cpus)))
+
+
 (defvar minimal-emacs--success nil)
 (defun minimal-emacs--check-success ()
   "Verify that the Emacs configuration has loaded successfully."
